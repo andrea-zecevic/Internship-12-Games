@@ -41,3 +41,18 @@ export async function fetchPlatforms() {
     throw error;
   }
 }
+
+export async function fetchGameById(gameId) {
+  const url = `${BASE_URL}/games/${gameId}?key=${API_KEY}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const game = await response.json();
+    return game;
+  } catch (error) {
+    console.error("Error fetching game:", error);
+    throw error;
+  }
+}

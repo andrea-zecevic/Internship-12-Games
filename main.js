@@ -1,4 +1,4 @@
-import { fetchGames, fetchPlatforms } from "./api.js";
+import { fetchGames, fetchPlatforms, fetchGameById } from "./api.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const topGamesContainer = document.getElementById("games-container");
@@ -118,3 +118,44 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   platformSearchButton.addEventListener("click", searchGamesByPlatforms);
 });
+
+function displayGameDetails(game) {
+  const detailsContainer = document.getElementById("game-details-container");
+  detailsContainer.innerHTML = "";
+
+  const gameCard = document.createElement("div");
+  gameCard.className = "game-card";
+  gameCard.innerHTML = `
+      <img src="${game.background_image || "placeholder-image.jpg"}" alt="${
+    game.name
+  }">
+      <div class="game-info">
+        <h3>${game.name}</h3>
+        <p>Released: ${game.released}</p>
+      </div>
+    `;
+
+  const rating = Math.round(game.rating / 2);
+  const starsContainer = document.createElement("div");
+  starsContainer.className = "stars-container";
+
+  for (let i = 0; i < 5; i++) {
+    const star = document.createElement("span");
+    star.textContent = i < rating ? "★" : "☆";
+    star.style.color = i < rating ? "#FFD700" : "#ccc";
+    starsContainer.appendChild(star);
+  }
+
+  detailsContainer.appendChild(gameCard);
+  detailsContainer.appendChild(starsContainer);
+}
+
+document
+  .getElementById("fetch-game-button")
+  .addEventListener("click", async () => {
+    const gameId = prompt("Please enter the game ID:");
+    if (gameId) {
+      const game = await fetchGameById(gameId);
+      displayGameDetails(game);
+    }
+  });
