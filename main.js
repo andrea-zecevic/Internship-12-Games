@@ -1,4 +1,4 @@
-import { fetchGames } from "./api.js";
+import { fetchGames, fetchPlatforms } from "./api.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const topGamesContainer = document.getElementById("games-container");
@@ -50,4 +50,71 @@ searchButton.addEventListener("click", async () => {
       console.error("Failed to search for games:", error);
     }
   }
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const platforms = await fetchPlatforms();
+    displayPlatforms(platforms);
+  } catch (error) {
+    console.error("Failed to load platforms:", error);
+  }
+});
+
+function displayPlatforms(platforms) {
+  const platformsContainer = document.getElementById("platforms-container");
+  platformsContainer.innerHTML = "";
+
+  platforms.forEach((platform) => {
+    const platformCard = document.createElement("div");
+    platformCard.className = "platform-card";
+    platformCard.innerHTML = `
+        <div class="platform-name">${platform.name}</div>
+      `;
+    platformsContainer.appendChild(platformCard);
+  });
+}
+
+async function searchGamesByPlatforms() {
+  const userInput = prompt("Enter the names of platforms separated by commas:");
+  if (userInput) {
+    const platformNames = userInput
+      .split(",")
+      .map((name) => name.trim().toLowerCase());
+    const platforms = await fetchPlatforms();
+
+    const filteredPlatforms = platforms.filter((platform) =>
+      platformNames.includes(platform.name.toLowerCase())
+    );
+    const platformIds = filteredPlatforms
+      .map((platform) => platform.id)
+      .slice(0, 10);
+
+    if (platformIds.length > 0) {
+      const games = await fetchGames({
+        platforms: platformIds.join(","),
+        page_size: 20,
+        ordering: "name",
+      });
+      displayGames(games, "platform-search-results-container");
+    } else {
+      alert("No platforms found with the given names.");
+    }
+  }
+}
+
+function displayGames(games, containerId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+  games.forEach((game) => {
+    const gameCard = createGameCard(game);
+    container.appendChild(gameCard);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const platformSearchButton = document.getElementById(
+    "platform-search-button"
+  );
+  platformSearchButton.addEventListener("click", searchGamesByPlatforms);
 });

@@ -26,3 +26,18 @@ export async function fetchGames({
     throw error;
   }
 }
+
+export async function fetchPlatforms() {
+  const url = `${BASE_URL}/platforms?key=${API_KEY}&page_size=10`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    return data.results;
+  } catch (error) {
+    console.error("Error fetching platforms:", error);
+    throw error;
+  }
+}
