@@ -43,6 +43,7 @@
   color: blue;
 }
 
+#fetch-stores-button,
 #fetch-game-button,
 #platform-search-button,
 #search-button {
@@ -56,6 +57,7 @@
   margin-bottom: 40px;
 }
 
+#fetch-stores-button:hover,
 #fetch-game-button:hover,
 #platform-search-button:hover,
 #search-button:hover {
@@ -90,4 +92,23 @@
 
 .stars-container span {
   font-size: 20px;
+}
+
+.store-card {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin: 10px;
+  padding: 10px;
+}
+
+.store-image {
+  width: 100px;
+  height: auto;
+  margin-right: 20px;
+}
+
+.store-info {
+  flex-grow: 1;
 }

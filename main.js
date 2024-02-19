@@ -159,3 +159,37 @@ document
       displayGameDetails(game);
     }
   });
+
+function displayStores(game) {
+  const storesContainer = document.getElementById("stores-container");
+  storesContainer.innerHTML = "";
+
+  if (game.stores && game.stores.length > 0) {
+    game.stores.forEach((store) => {
+      const storeCard = document.createElement("div");
+      storeCard.className = "store-card";
+
+      storeCard.innerHTML = `
+                <img src="${store.store.image_background}" alt="${store.store.name}" class="store-image">
+                <div class="store-info">
+                    <h3>${store.store.name}</h3>
+                    <p>Games count: ${store.store.games_count}</p>
+                </div>
+            `;
+
+      storesContainer.appendChild(storeCard);
+    });
+  } else {
+    storesContainer.innerHTML = "<p>No stores found for this game.</p>";
+  }
+}
+
+document
+  .getElementById("fetch-stores-button")
+  .addEventListener("click", async () => {
+    const gameId = prompt("Please enter the game ID:");
+    if (gameId) {
+      const game = await fetchGameById(gameId);
+      displayStores(game);
+    }
+  });
