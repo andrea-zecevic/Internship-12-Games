@@ -1,12 +1,13 @@
 .task-title {
   color: #333;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 50px;
   margin-bottom: 20px;
   font-size: 36px;
   font-weight: normal;
 }
 
+#search-results-container,
 #games-container {
   display: flex;
   flex-wrap: wrap;
@@ -39,4 +40,19 @@
 
 .game-rating {
   color: blue;
+}
+
+#search-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 50px;
+  margin-bottom: 40px;
+}
+
+#search-button:hover {
+  background-color: #0056b3;
 }
