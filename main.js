@@ -5,6 +5,7 @@ import {
   fetchDevelopers,
   fetchGamesByDeveloper,
   fetchGamesByDateRange,
+  fetchGamesByMetacriticScore,
 } from "./api.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -297,4 +298,42 @@ function isValidDate(dateString) {
     return false;
   }
   return dateString === date.toISOString().split("T")[0];
+}
+
+document
+  .getElementById("metacritic-button")
+  .addEventListener("click", askForMetacriticScoresAndFetchGames);
+
+function askForMetacriticScoresAndFetchGames() {
+  let minScore = prompt("Please enter the minimum Metacritic score (0-100):");
+  let maxScore = prompt("Please enter the maximum Metacritic score (0-100):");
+
+  minScore = parseInt(minScore, 10);
+  maxScore = parseInt(maxScore, 10);
+  if (
+    isNaN(minScore) ||
+    isNaN(maxScore) ||
+    minScore < 0 ||
+    maxScore > 100 ||
+    minScore > maxScore
+  ) {
+    alert("Invalid scores. Please enter correct scores.");
+    return;
+  }
+
+  fetchGamesByMetacriticScore(minScore, maxScore)
+    .then((games) => {
+      const gamesContainer = document.getElementById(
+        "metacritic-games-container"
+      );
+      gamesContainer.innerHTML = "";
+
+      games.forEach((game) => {
+        const gameCard = createGameCard(game);
+        gamesContainer.appendChild(gameCard);
+      });
+    })
+    .catch((error) => {
+      console.error("Failed to fetch games by Metacritic score:", error);
+    });
 }

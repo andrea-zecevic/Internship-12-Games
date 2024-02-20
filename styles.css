@@ -7,6 +7,7 @@
   font-weight: normal;
 }
 
+#metacritic-games-container,
 #platform-search-results-container,
 #search-results-container,
 #games-container {
@@ -43,6 +44,7 @@
   color: blue;
 }
 
+#metacritic-button,
 #date-button,
 #select-developers-button,
 #fetch-stores-button,
@@ -59,6 +61,7 @@
   margin-bottom: 40px;
 }
 
+#metacritic-button:hover,
 #date-button:hover,
 #select-developers-button:hover,
 #fetch-stores-button:hover,

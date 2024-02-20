@@ -105,3 +105,17 @@ export async function fetchGamesByDateRange(startDate, endDate) {
     return [];
   }
 }
+
+export async function fetchGamesByMetacriticScore(minScore, maxScore) {
+  const url = `${BASE_URL}/games?metacritic=${minScore},${maxScore}&page_size=20&ordering=-metacritic,name&key=${API_KEY}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to fetch games.");
+    const { results } = await response.json();
+    return results;
+  } catch (error) {
+    console.error("Error fetching games by Metacritic score:", error);
+    throw error;
+  }
+}
