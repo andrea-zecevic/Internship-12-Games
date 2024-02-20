@@ -1,4 +1,10 @@
-import { fetchGames, fetchPlatforms, fetchGameById } from "./api.js";
+import {
+  fetchGames,
+  fetchPlatforms,
+  fetchGameById,
+  fetchDevelopers,
+  fetchGamesByDeveloper,
+} from "./api.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const topGamesContainer = document.getElementById("games-container");
@@ -192,4 +198,48 @@ document
       const game = await fetchGameById(gameId);
       displayStores(game);
     }
+  });
+
+function displayDeveloperGames(games, developerName) {
+  const developerGamesContainer = document.createElement("div");
+  developerGamesContainer.className = "developer-games-container";
+
+  const title = document.createElement("h3");
+  title.textContent = `${developerName}'s Games`;
+  developerGamesContainer.appendChild(title);
+
+  games.forEach((game) => {
+    const gameCard = createGameCard(game);
+    developerGamesContainer.appendChild(gameCard);
+  });
+
+  document.body.appendChild(developerGamesContainer);
+}
+
+document
+  .getElementById("select-developers-button")
+  .addEventListener("click", async () => {
+    const developers = await fetchDevelopers();
+    const developerNames = developers.map((dev) => dev.name).join(", ");
+    const userInput = prompt(
+      `Enter developer names separated by commas: ${developerNames}`
+    );
+    const selectedDeveloperNames = userInput
+      .split(",")
+      .map((name) => name.trim());
+
+    selectedDeveloperNames.forEach(async (name) => {
+      const developer = developers.find(
+        (dev) => dev.name.toLowerCase() === name.toLowerCase()
+      );
+      if (developer) {
+        await fetchGamesByDeveloper(
+          developer.id,
+          developer.name,
+          displayDeveloperGames
+        );
+      } else {
+        console.log(`Developer with name ${name} not found.`);
+      }
+    });
   });

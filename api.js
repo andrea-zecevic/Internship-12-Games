@@ -56,3 +56,36 @@ export async function fetchGameById(gameId) {
     throw error;
   }
 }
+
+export async function fetchDevelopers() {
+  const url = `${BASE_URL}/developers?key=${API_KEY}&page_size=10`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Network response was not ok");
+    const { results } = await response.json();
+    return results;
+  } catch (error) {
+    console.error("Error fetching developers:", error);
+    throw error;
+  }
+}
+
+export async function fetchGamesByDeveloper(
+  developerId,
+  developerName,
+  callback
+) {
+  const url = `${BASE_URL}/games?key=${API_KEY}&developers=${developerId}&page_size=10&ordering=-rating`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Network response was not ok");
+    const { results } = await response.json();
+    if (callback) callback(results, developerName);
+  } catch (error) {
+    console.error(
+      `Error fetching games for developer ${developerName}:`,
+      error
+    );
+    throw error;
+  }
+}
