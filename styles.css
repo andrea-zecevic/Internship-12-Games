@@ -120,7 +120,7 @@
   flex-grow: 1;
 }
 
-.developer-games-container {
+.developer-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

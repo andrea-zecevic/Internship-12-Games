@@ -203,19 +203,23 @@ document
   });
 
 function displayDeveloperGames(games, developerName) {
-  const developerGamesContainer = document.createElement("div");
-  developerGamesContainer.className = "developer-games-container";
+  const mainDeveloperGamesContainer = document.getElementById(
+    "developer-games-container"
+  );
+
+  const developerContainer = document.createElement("div");
+  developerContainer.className = "developer-container";
 
   const title = document.createElement("h3");
   title.textContent = `${developerName}'s Games`;
-  developerGamesContainer.appendChild(title);
+  developerContainer.appendChild(title);
 
   games.forEach((game) => {
     const gameCard = createGameCard(game);
-    developerGamesContainer.appendChild(gameCard);
+    developerContainer.appendChild(gameCard);
   });
 
-  document.body.appendChild(developerGamesContainer);
+  mainDeveloperGamesContainer.appendChild(developerContainer);
 }
 
 document
