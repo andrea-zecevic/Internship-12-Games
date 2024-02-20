@@ -89,3 +89,19 @@ export async function fetchGamesByDeveloper(
     throw error;
   }
 }
+
+export async function fetchGamesByDateRange(startDate, endDate) {
+  const formattedStartDate = startDate.replaceAll("-", "");
+  const formattedEndDate = endDate.replaceAll("-", "");
+  const url = `${BASE_URL}/games?dates=${formattedStartDate},${formattedEndDate}&ordering=-metacritic&page_size=10&key=${API_KEY}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to fetch games.");
+    const data = await response.json();
+    return data.results;
+  } catch (error) {
+    console.error("Error fetching games by date range:", error);
+    return [];
+  }
+}

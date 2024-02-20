@@ -43,6 +43,7 @@
   color: blue;
 }
 
+#date-button,
 #select-developers-button,
 #fetch-stores-button,
 #fetch-game-button,
@@ -58,6 +59,7 @@
   margin-bottom: 40px;
 }
 
+#date-button:hover,
 #select-developers-button:hover,
 #fetch-stores-button:hover,
 #fetch-game-button:hover,

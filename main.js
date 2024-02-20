@@ -4,6 +4,7 @@ import {
   fetchGameById,
   fetchDevelopers,
   fetchGamesByDeveloper,
+  fetchGamesByDateRange,
 } from "./api.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -243,3 +244,57 @@ document
       }
     });
   });
+
+async function fetchAndDisplayGamesByDateRange(startDate, endDate) {
+  const games = await fetchGamesByDateRange(startDate, endDate);
+  const gamesContainer = document.getElementById("date-games-container");
+  gamesContainer.innerHTML = "";
+
+  if (games.length > 0) {
+    games.forEach((game) => {
+      const gameCard = createGameCard(game);
+      gamesContainer.appendChild(gameCard);
+    });
+  } else {
+    gamesContainer.innerHTML = "No games found for the specified date range.";
+  }
+}
+
+document
+  .getElementById("date-button")
+  .addEventListener("click", askForDatesAndFetchGames);
+
+async function askForDatesAndFetchGames() {
+  let startDate, endDate;
+  do {
+    startDate = prompt("Please enter the start date (YYYY-MM-DD):");
+    endDate = prompt("Please enter the end date (YYYY-MM-DD):");
+
+    if (
+      !isValidDate(startDate) ||
+      !isValidDate(endDate) ||
+      startDate > endDate
+    ) {
+      alert("Invalid dates. Please enter the correct dates.");
+    }
+  } while (
+    !isValidDate(startDate) ||
+    !isValidDate(endDate) ||
+    startDate > endDate
+  );
+
+  await fetchAndDisplayGamesByDateRange(startDate, endDate);
+}
+
+function isValidDate(dateString) {
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  if (dateString.match(regex) === null) {
+    return false;
+  }
+  const date = new Date(dateString);
+  const timestamp = date.getTime();
+  if (typeof timestamp !== "number" || Number.isNaN(timestamp)) {
+    return false;
+  }
+  return dateString === date.toISOString().split("T")[0];
+}
